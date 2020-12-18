@@ -22,7 +22,7 @@ export default class MainApp extends Component {
     }
 
     Refresh = () => {
-        fetch("api/Todos")
+        fetch("api/todos")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -30,7 +30,7 @@ export default class MainApp extends Component {
                         items: result
                     });
                 }
-            )
+                )
 
     };
 
@@ -73,7 +73,7 @@ export default class MainApp extends Component {
     };
 
     onDelete = (id) => {
-        fetch("api/Todos/" + id, {
+        fetch("api/todos/" + id, {
 
             method: "DELETE",
             headers: {
@@ -122,7 +122,7 @@ export default class MainApp extends Component {
 
     render() {
         const { items, filter, search } = this.state;
-        const doneCount = items.filter(item => item.isCompleted).length;
+        const doneCount = items.filter(item => item.done).length;
         const toDoCount = items.length - doneCount;
         const visibleItems = this.searchItems(this.filterItems(items, filter), search);
 

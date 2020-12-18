@@ -5,21 +5,31 @@ import './item-add-form.css';
 export default class ItemAddForm extends Component {
 
   state = {
-    label: ''
+      label: '',
+      untilDate: ''
   };
 
   onLabelChange = (e) => {
     this.setState({
-      label: e.target.value
+        label: e.target.value
     })
   };
 
+  onUntilDateChange = (e) => {
+    this.setState({
+        untilDate: e.target.value
+    })
+  }
+
+
   onSubmit = (e) => {
     e.preventDefault();
-    const { label } = this.state;
-    this.setState({ label: '' });
-    const cb = this.props.onItemAdded || (() => {});
-    cb(label);
+      const { label } = this.state;
+      const { untilDate } = this.state;
+      this.setState({ label: '' });
+      this.setState({ untilDate: '' });
+      const cb = this.props.onItemAdded || (() => { });
+      cb(label, untilDate);
   };
 
   render() {
@@ -33,6 +43,13 @@ export default class ItemAddForm extends Component {
                value={this.state.label}
                onChange={this.onLabelChange}
                placeholder="What needs to be done?" />
+
+        <input type="text"
+            className="form-control new-todo-label"
+            value={this.state.label}
+            onChange={this.onLabelChange}
+            placeholder="Date to complete" />
+            
 
         <button type="submit"
                 className="btn btn-outline-secondary">Add</button>

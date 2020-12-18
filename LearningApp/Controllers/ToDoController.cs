@@ -25,13 +25,6 @@ namespace TodoApiReact.Controllers
             return db.Items.ToList();
         }
 
-        [HttpGet("{id}")]
-        public Item Get(int id)
-        {
-            Item todo = db.Items.FirstOrDefault(x => x.Id == id);
-            return todo;
-        }
-
         [HttpPost]
         public async Task<ActionResult<Item>> Post(Item todo)
         {
