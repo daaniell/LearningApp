@@ -20,9 +20,9 @@ export default class MainApp extends Component {
             search: ''
         };
     }
-
+    
     Refresh = () => {
-        fetch("api/todos")
+        fetch('api/todos')
             .then(res => res.json())
             .then(
                 (result) => {
@@ -31,19 +31,39 @@ export default class MainApp extends Component {
                     });
                 }
                 )
-
     };
+
 
     componentDidMount() {
         this.Refresh();
     };
 
+    PostData = () => {
+        fetch('api/todos/post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;'
+            },
+            body: JSON.stringify()
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        items: result
+                    });
+                }
+            )
+    }
+
+
     onItemAdded = (label) => {
         this.setState((state) => {
             const item = this.createItem(label);
             return { items: [...state.items, item] };
-        })
+        });
     };
+
 
     toggleProperty = (arr, id, propName) => {
         const idx = arr.findIndex((item) => item.id === id);
@@ -54,8 +74,11 @@ export default class MainApp extends Component {
         return [
             ...arr.slice(0, idx),
             item,
-            ...arr.slice(idx + 1)
+            ...arr.slice(idx + 1),
         ];
+    };
+    componentDidMount() {
+        this.PostData();
     };
 
     onToggleDone = (id) => {
@@ -64,6 +87,9 @@ export default class MainApp extends Component {
             return { items };
         });
     };
+    componentDidMount() {
+        this.PostData();
+    };
 
     onToggleImportant = (id) => {
         this.setState((state) => {
@@ -71,10 +97,12 @@ export default class MainApp extends Component {
             return { items };
         });
     };
+    componentDidMount() {
+        this.PostData();
+    };
 
     onDelete = (id) => {
         fetch("api/todos/" + id, {
-
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'

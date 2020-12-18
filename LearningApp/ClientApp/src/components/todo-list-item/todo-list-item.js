@@ -5,8 +5,8 @@ import './todo-list-item.css';
 const TodoListItem = ({ important, done,
     name, untilDate, onToggleImportant, onToggleDone, onDelete }) => {
 
-    let date = new Date(untilDate);
-    let dateFormat = date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear();
+    let dateFormat = new Date(untilDate);
+    let date = dateFormat.getDate() + '.' + (dateFormat.getMonth() + 1) + '.' + dateFormat.getFullYear();
 
     let classNames = 'todo-list-item date';
     if (important) {
@@ -26,7 +26,7 @@ const TodoListItem = ({ important, done,
             </span>
             <span
                 className="todo-list-item-date"
-                onClick={onToggleDone}>{dateFormat}
+                onClick={onToggleDone}>{date}
             </span>
             <button type="button"
                 className="btn btn-outline-success btn-sm float-right"
