@@ -10,7 +10,7 @@ using LearningApp.Data.Models;
 namespace TodoApiReact.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/todos")]
     public class TodosController : ControllerBase
     {
         AppDbContext db;

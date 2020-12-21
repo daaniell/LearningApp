@@ -22,8 +22,8 @@ export default class MainApp extends Component {
     }
     
     Refresh = () => {
-        fetch('api/todos')
-            .then(res => res.json())
+        fetch('api/todos/')
+            .then(res => res.json(items))
             .then(
                 (result) => {
                     this.setState({
@@ -33,7 +33,6 @@ export default class MainApp extends Component {
                 )
     };
 
-
     componentDidMount() {
         this.Refresh();
     };
@@ -41,10 +40,6 @@ export default class MainApp extends Component {
     PostData = () => {
         fetch('api/todos/post', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;'
-            },
-            body: JSON.stringify()
         })
             .then(res => res.json())
             .then(
@@ -55,7 +50,6 @@ export default class MainApp extends Component {
                 }
             )
     }
-
 
     onItemAdded = (label) => {
         this.setState((state) => {
@@ -77,18 +71,13 @@ export default class MainApp extends Component {
             ...arr.slice(idx + 1),
         ];
     };
-    componentDidMount() {
-        this.PostData();
-    };
+    
 
     onToggleDone = (id) => {
         this.setState((state) => {
             const items = this.toggleProperty(state.items, id, 'done');
             return { items };
         });
-    };
-    componentDidMount() {
-        this.PostData();
     };
 
     onToggleImportant = (id) => {
@@ -97,20 +86,20 @@ export default class MainApp extends Component {
             return { items };
         });
     };
-    componentDidMount() {
-        this.PostData();
-    };
 
     onDelete = (id) => {
-        fetch("api/todos/" + id, {
+        fetch('api/todos/' + id, {
             method: "DELETE",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-
-        this.Refresh();
-   };
+        })
+            .then(res => res.json())
+            .then(
+                 (result) => {
+                    this.setState({
+                        items: result
+                    });
+                 }
+            )
+    }
 
     onFilterChange = (filter) => {
         this.setState({ filter });
