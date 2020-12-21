@@ -13,12 +13,12 @@
     cursor: pointer;
     user-select: none;
   }
-  
-  .todo-list-item.done .todo-list-item-label {
-    text-decoration: line-through;
-  }
 
-.todo-list-item.important .todo-list-item-label .todo-list-item-date {
+.todo-list-item.done .todo-list-item-label, .todo-list-item.done .todo-list-item-date {
+    text-decoration: line-through;
+}
+
+.todo-list-item.important .todo-list-item-label, .todo-list-item.important .todo-list-item-date {
     font-weight: bold;
     color: steelblue;
 }

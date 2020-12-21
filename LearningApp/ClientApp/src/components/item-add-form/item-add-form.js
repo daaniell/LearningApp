@@ -21,7 +21,6 @@ export default class ItemAddForm extends Component {
     })
   }
 
-
   onSubmit = (e) => {
     e.preventDefault();
       const { label } = this.state;
@@ -45,8 +44,8 @@ export default class ItemAddForm extends Component {
                placeholder="What needs to be done?" />
 
         <input type="text"
-            className="form-control new-todo-label"
-            value={this.state.label}
+            className="form-control new-todo-date"
+            value={this.state.untilDate}
                 onChange={this.onUntilDateChange}
             placeholder="Date to complete" />
             

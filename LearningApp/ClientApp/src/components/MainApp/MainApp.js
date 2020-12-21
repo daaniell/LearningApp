@@ -7,6 +7,7 @@ import ItemStatusFilter from '../item-status-filter';
 import ItemAddForm from '../item-add-form';
 
 import './MainApp.css';
+import { data } from 'jquery';
 
 
 export default class MainApp extends Component {
@@ -20,10 +21,11 @@ export default class MainApp extends Component {
             search: ''
         };
     }
-    
+
+
     Refresh = () => {
-        fetch('api/todos/')
-            .then(res => res.json(items))
+        fetch('api/todos')
+            .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
@@ -33,12 +35,8 @@ export default class MainApp extends Component {
                 )
     };
 
-    componentDidMount() {
-        this.Refresh();
-    };
-
     PostData = () => {
-        fetch('api/todos/post', {
+        fetch('api/todos/', {
             method: 'POST',
         })
             .then(res => res.json())
@@ -51,13 +49,24 @@ export default class MainApp extends Component {
             )
     }
 
-    onItemAdded = (label) => {
+    onItemAdded = (label, date) => {
         this.setState((state) => {
-            const item = this.createItem(label);
+            const item = this.createItem(label, date);
             return { items: [...state.items, item] };
         });
+        fetch('api/todos/post', {
+            method: 'POST',
+            body: JSON.stringify() // - Unhandled Rejection (SyntaxError): Unexpected end of JSON input
+        })
+            .then(res => res.json()) 
+            .then(
+                (result) => {
+                    this.setState({
+                        items: result
+                    });
+                }
+        )
     };
-
 
     toggleProperty = (arr, id, propName) => {
         const idx = arr.findIndex((item) => item.id === id);
@@ -109,11 +118,12 @@ export default class MainApp extends Component {
         this.setState({ search });
     };
 
-    createItem = (name) => {
+    createItem = (name, date) => {
         return {
             id: ++this.maxId,
             name: name,
-            done: false
+            done: false,
+            untilDate: date
         };
     };
 
@@ -139,7 +149,7 @@ export default class MainApp extends Component {
 
     render() {
         const { items, filter, search } = this.state;
-        const doneCount = items.filter(item => item.done).length;
+        const doneCount = items.filter((item) => item.done).length;
         const toDoCount = items.length - doneCount;
         const visibleItems = this.searchItems(this.filterItems(items, filter), search);
 
@@ -166,5 +176,9 @@ export default class MainApp extends Component {
                     onItemAdded={this.onItemAdded} />
             </div>
         );
+    };
+
+    componentDidMount() {
+        this.Refresh();
     };
 }
