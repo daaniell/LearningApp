@@ -63,19 +63,21 @@ export default class MainApp extends Component {
         this.setState((state) => {
             return { items: [...state.items, item] };
         });
-        const data = {};
-        for (var i = 0; i < item.length; i++) {
-            data += item[i]
-        }
-        fetch('api/todos/post', {
+      
+        fetch('api/todos', { // - 405 Unhandled Rejection (SyntaxError): Unexpected end of JSON input
             method: 'POST',
-            body: JSON.stringify(data),
+            body: JSON.stringify(item),
+            headers: {
+                'Content-Type': 'application/json'
+            },
         })
             .then(res => res.json()) 
             .then(
                 (result) => {
+                    const newItems = [...items];
+                    newItems.push(result);
                     this.setState({
-                        items: result
+                        items: newItems
                     });
                 }
         )

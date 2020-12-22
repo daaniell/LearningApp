@@ -31,11 +31,20 @@ namespace TodoApiReact.Controllers
             }
 
             [HttpPost]
-            public async Task<ActionResult<Item>> Post(Item todo)
+            public async Task<ActionResult<Item>> Post([FromBody]Item todo)
             {
-                db.Items.Add(todo);
-                await db.SaveChangesAsync();
+                try
+                {
+                    todo.Id = 0;
+                    db.Items.Add(todo);
+                    await db.SaveChangesAsync();
+                    return Ok(todo);
+                }
+                catch(Exception ex)
+                {
+                Console.WriteLine(ex.Message);
                 return Ok(todo);
+            }
             }
 
             [HttpPut]
