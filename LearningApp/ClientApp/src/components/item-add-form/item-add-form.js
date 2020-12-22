@@ -25,8 +25,10 @@ export default class ItemAddForm extends Component {
     e.preventDefault();
       const { label } = this.state;
       const { untilDate } = this.state;
-      this.setState({ label: '' });
-      this.setState({ untilDate: '' });
+      this.setState({
+          label: '',
+          untilDate: ''
+      });
       const cb = this.props.onItemAdded || (() => { });
       cb(label, untilDate);
   };
@@ -44,10 +46,10 @@ export default class ItemAddForm extends Component {
                placeholder="What needs to be done?" />
 
         <input type="date"
-            className="form-control new-todo-date"
-            value={this.state.untilDate}
-                onChange={this.onUntilDateChange}
-            placeholder="Date to complete" />
+               className="form-control new-todo-date"
+               value={this.state.untilDate}
+               onChange={this.onUntilDateChange}
+               placeholder="Date to complete" />
             
 
         <button type="submit"

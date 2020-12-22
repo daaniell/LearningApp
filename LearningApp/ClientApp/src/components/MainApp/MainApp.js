@@ -49,18 +49,27 @@ export default class MainApp extends Component {
             )
     }
 
+    createItem = (name, date) => {
+        return {
+            id: ++this.maxId,
+            name: name,
+            done: false,
+            untilDate: date
+        };
+    };
+
     onItemAdded = (label, date) => {
         const item = this.createItem(label, date);
         this.setState((state) => {
             return { items: [...state.items, item] };
         });
-        const formData = new FormData();
+        const data = {};
         for (var i = 0; i < item.length; i++) {
-            formData.append(item[i])
+            data += item[i]
         }
         fetch('api/todos/post', {
             method: 'POST',
-            body: formData,
+            body: JSON.stringify(data),
         })
             .then(res => res.json()) 
             .then(
@@ -121,15 +130,6 @@ export default class MainApp extends Component {
 
     onSearchChange = (search) => {
         this.setState({ search });
-    };
-
-    createItem = (name, date) => {
-        return {
-            id: ++this.maxId,
-            name: name,
-            done: false,
-            untilDate: date
-        };
     };
 
     filterItems = (items, filter) => {
