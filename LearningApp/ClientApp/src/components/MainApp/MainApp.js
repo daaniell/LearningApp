@@ -50,13 +50,17 @@ export default class MainApp extends Component {
     }
 
     onItemAdded = (label, date) => {
+        const item = this.createItem(label, date);
         this.setState((state) => {
-            const item = this.createItem(label, date);
             return { items: [...state.items, item] };
         });
+        const formData = new FormData();
+        for (var i = 0; i < item.length; i++) {
+            formData.append(item[i])
+        }
         fetch('api/todos/post', {
             method: 'POST',
-            body: JSON.stringify() // - Unhandled Rejection (SyntaxError): Unexpected end of JSON input
+            body: formData,
         })
             .then(res => res.json()) 
             .then(
@@ -66,6 +70,7 @@ export default class MainApp extends Component {
                     });
                 }
         )
+        
     };
 
     toggleProperty = (arr, id, propName) => {

@@ -43,7 +43,7 @@ export default class ItemAddForm extends Component {
                onChange={this.onLabelChange}
                placeholder="What needs to be done?" />
 
-        <input type="text"
+        <input type="date"
             className="form-control new-todo-date"
             value={this.state.untilDate}
                 onChange={this.onUntilDateChange}
