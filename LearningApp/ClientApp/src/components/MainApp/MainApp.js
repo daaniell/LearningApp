@@ -61,7 +61,7 @@ export default class MainApp extends Component {
     onItemAdded = (label, date) => {
         const item = this.createItem(label, date);
         this.setState((state) => {
-            return { items: [...state.items, item] };
+            return { items: [...state.items, item] }; // убрать
         });
       
         fetch('api/todos', { // - 405 Unhandled Rejection (SyntaxError): Unexpected end of JSON input
@@ -74,10 +74,8 @@ export default class MainApp extends Component {
             .then(res => res.json()) 
             .then(
                 (result) => {
-                    const newItems = [...items];
-                    newItems.push(result);
                     this.setState({
-                        items: newItems
+                        items: [...this.state.items, result]
                     });
                 }
         )
