@@ -12,7 +12,7 @@ import { data } from 'jquery';
 
 export default class MainApp extends Component {
 
-    maxId = 100;
+    id = 0;
     constructor(props) {
         super(props);
         this.state = {
@@ -35,23 +35,28 @@ export default class MainApp extends Component {
                 )
     };
 
-    PostData = () => {
-        fetch('api/todos/', {
+    PostData = (item) => {
+        fetch('api/todos', {
             method: 'POST',
+            body: JSON.stringify(item),
+            headers: {
+                'Content-Type': 'application/json'
+            },
         })
             .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
-                        items: result
+                        items: [...this.state.items, result]
                     });
+                    this.Refresh()
                 }
             )
-    }
+    };
 
     createItem = (name, date) => {
         return {
-            id: ++this.maxId,
+            id: ++this.id,
             name: name,
             done: false,
             untilDate: date
@@ -60,54 +65,22 @@ export default class MainApp extends Component {
 
     onItemAdded = (label, date) => {
         const item = this.createItem(label, date);
-        this.setState((state) => {
-            return { items: [...state.items, item] }; // убрать
-        });
-      
-        fetch('api/todos', { // - 405 Unhandled Rejection (SyntaxError): Unexpected end of JSON input
+        fetch('api/todos', {
             method: 'POST',
             body: JSON.stringify(item),
             headers: {
                 'Content-Type': 'application/json'
             },
         })
-            .then(res => res.json()) 
+            .then(res => res.json())
             .then(
                 (result) => {
                     this.setState({
                         items: [...this.state.items, result]
                     });
+                    this.Refresh()
                 }
-        )
-        
-    };
-
-    toggleProperty = (arr, id, propName) => {
-        const idx = arr.findIndex((item) => item.id === id);
-        const oldItem = arr[idx];
-        const value = !oldItem[propName];
-
-        const item = { ...arr[idx], [propName]: value };
-        return [
-            ...arr.slice(0, idx),
-            item,
-            ...arr.slice(idx + 1),
-        ];
-    };
-    
-
-    onToggleDone = (id) => {
-        this.setState((state) => {
-            const items = this.toggleProperty(state.items, id, 'done');
-            return { items };
-        });
-    };
-
-    onToggleImportant = (id) => {
-        this.setState((state) => {
-            const items = this.toggleProperty(state.items, id, 'important');
-            return { items };
-        });
+            )
     };
 
     onDelete = (id) => {
@@ -116,14 +89,64 @@ export default class MainApp extends Component {
         })
             .then(res => res.json())
             .then(
-                 (result) => {
+                (result) => {
                     this.setState({
-                        items: result
+                        items: [...this.state.items]
                     });
-                 }
+                this.Refresh()
+                },
             )
     }
 
+    onToggleDone = (id) => {
+            const items = this.toggleProperty(this.state.items, id, 'done'); // не работает
+            fetch('api/todos/' + id, {
+                method: 'PUT',
+                body: JSON.stringify( items ),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+             })
+                .then(res => res.json())
+                .then(
+                    (result) => {
+                        this.setState({
+                            items: [...this.state.items]
+                        });
+                        this.Refresh()
+                    }
+                )
+    };
+
+    onToggleImportant = (id) => {
+        this.setState((state) => {
+            const items = this.toggleProperty(state.items, id, 'important'); // работает без фетча
+            return { items };
+        });
+        //fetch('api/todos', {
+        //    method: 'PUT',
+        //    body: JSON.stringify(items),
+        //    headers: {
+        //        'Content-Type': 'application/json'
+        //    },
+        //})
+        //    .then(res => res.json())
+        //    .then(
+        //        (result) => {
+        //            this.setState({
+        //                items: [...this.state.items, result]
+        //            });
+        //            this.Refresh()
+        //        }
+        //    )
+    };
+
+    toggleProperty(arr, id, propname) {
+        return arr.map(el =>
+            el.id === id ? { ...el, [propname]: !el[propname] } : el
+        );
+    };
+   
     onFilterChange = (filter) => {
         this.setState({ filter });
     };

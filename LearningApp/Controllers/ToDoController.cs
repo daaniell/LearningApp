@@ -17,14 +17,14 @@ namespace TodoApiReact.Controllers
         public TodosController(AppDbContext context)
         {
             db = context;
-            //if (!db.Items.Any())
-            //{
-            //    db.Items.Add(new Item { Name = "Finish app", isCompleted = false, UntilDate = DateTime.Parse("26.12.2020") });
-            //    db.Items.Add(new Item { Name = "Go home after work", isCompleted = false, UntilDate = DateTime.Parse("31.12.2020") });
-            //    db.SaveChanges();
-            //};
+            if (!db.Items.Any())
+            {
+                db.Items.Add(new Item { Name = "Finish app", IsCompleted = false, UntilDate = DateTime.Parse("26.12.2020") });
+                db.Items.Add(new Item { Name = "Go home after work", IsCompleted = false, UntilDate = DateTime.Parse("31.12.2020") });
+                db.SaveChanges();
+            };
         }
-            [HttpGet]
+        [HttpGet]
             public List<Item> Get()
             {
                 return db.Items.ToList();
@@ -47,18 +47,18 @@ namespace TodoApiReact.Controllers
             }
             }
 
-            [HttpPut]
-            public async Task<ActionResult<Item>> Put(Item todo)
+            [HttpPut("{id}")]
+            public async Task<ActionResult<Item>> Put(int id)
             {
+                Item todo = db.Items.FirstOrDefault(x => x.Id == id);
                 if (todo == null)
                 {
                     return BadRequest();
                 }
-                if (!db.Items.Any(x => x.Id == todo.Id))
+                if (!db.Items.Any(x => x.Id == id))
                 {
                     return NotFound();
                 }
-
                 db.Update(todo);
                 await db.SaveChangesAsync();
                 return Ok(todo);

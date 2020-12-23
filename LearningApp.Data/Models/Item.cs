@@ -8,8 +8,8 @@ namespace LearningApp.Data.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public bool isCompleted { get; set; } = false;
+        public bool IsCompleted { get; set; }
         public DateTime UntilDate { get; set; }
-        public DateTime ModifiteDate { get; set; }
+        public bool IsImportant { get; set; }
     }
 }
