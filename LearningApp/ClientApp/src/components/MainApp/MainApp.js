@@ -94,7 +94,7 @@ export default class MainApp extends Component {
                         items: [...this.state.items]
                     });
                 this.Refresh()
-                },
+                }
             )
     }
 
@@ -112,7 +112,7 @@ export default class MainApp extends Component {
                     this.Refresh()
                 }
                 )
-        return { items };
+        
     };
 
     onToggleImportant = (id) => {
@@ -129,7 +129,7 @@ export default class MainApp extends Component {
                     this.Refresh()
                 }
                 )
-        return { items };
+        
     };
 
     toggleProperty(arr, id, propname) {
