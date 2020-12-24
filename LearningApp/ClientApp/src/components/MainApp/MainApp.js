@@ -80,7 +80,7 @@ export default class MainApp extends Component {
                     });
                     this.Refresh()
                 }
-            )
+                )
     };
 
     onDelete = (id) => {
@@ -99,46 +99,37 @@ export default class MainApp extends Component {
     }
 
     onToggleDone = (id) => {
-            const items = this.toggleProperty(this.state.items, id, 'done'); // не работает
-            fetch('api/todos/' + id, {
-                method: 'PUT',
-                body: JSON.stringify( items ),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-             })
-                .then(res => res.json())
-                .then(
-                    (result) => {
-                        this.setState({
-                            items: [...this.state.items]
-                        });
-                        this.Refresh()
-                    }
+        const items = this.toggleProperty(this.state.items, id, 'done');
+        fetch('api/todos/' + id + '/PutComplete', {
+            method: 'PUT',
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        items: [...this.state.items]
+                    });
+                    this.Refresh()
+                }
                 )
+        return { items };
     };
 
     onToggleImportant = (id) => {
-        this.setState((state) => {
-            const items = this.toggleProperty(state.items, id, 'important'); // работает без фетча
-            return { items };
-        });
-        //fetch('api/todos', {
-        //    method: 'PUT',
-        //    body: JSON.stringify(items),
-        //    headers: {
-        //        'Content-Type': 'application/json'
-        //    },
-        //})
-        //    .then(res => res.json())
-        //    .then(
-        //        (result) => {
-        //            this.setState({
-        //                items: [...this.state.items, result]
-        //            });
-        //            this.Refresh()
-        //        }
-        //    )
+        const items = this.toggleProperty(this.state.items, id, 'important');
+        fetch('api/todos/' + id + '/PutImportant', {
+            method: 'PUT',
+        })
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        items: [...this.state.items]
+                    });
+                    this.Refresh()
+                }
+                )
+        return { items };
     };
 
     toggleProperty(arr, id, propname) {
