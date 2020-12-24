@@ -95,7 +95,7 @@ export default class MainApp extends Component {
                     });
                 this.Refresh()
                 }
-            )
+                )
     }
 
     onToggleDone = (id) => {
@@ -112,7 +112,7 @@ export default class MainApp extends Component {
                     this.Refresh()
                 }
                 )
-        
+
     };
 
     onToggleImportant = (id) => {
@@ -129,7 +129,7 @@ export default class MainApp extends Component {
                     this.Refresh()
                 }
                 )
-        
+
     };
 
     toggleProperty(arr, id, propname) {
