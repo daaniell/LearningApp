@@ -107,13 +107,20 @@ export default class MainApp extends Component {
             .then(
                 (result) => {
                     this.setState({
-                        items: [...this.state.items]
+                        items: [...this.state.items] 
                     });
                     this.Refresh()
                 }
-                )
-
+        )                                                     // - данные уходят в базу, но фронт не работает
     };
+
+
+    //onToggleDone = (id) => {
+    //    this.setState((state) => {
+    //        const items = this.toggleProperty(state.items, id, 'done');
+    //        return { items };
+    //    });                                                                   // - фронт работает
+    //};
 
     onToggleImportant = (id) => {
         const items = this.toggleProperty(this.state.items, id, 'important');
