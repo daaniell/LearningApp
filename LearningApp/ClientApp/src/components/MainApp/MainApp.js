@@ -106,24 +106,17 @@ export default class MainApp extends Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    console.log(result)
                     this.setState({
-                        items: [...this.state.items] 
+                        items: [...this.state.items]
                     });
                     this.Refresh()
                 }
-        )                                                     // - данные уходят в базу, но фронт не работает
+        )
     };
 
-
-    //onToggleDone = (id) => {
-    //    this.setState((state) => {
-    //        const items = this.toggleProperty(state.items, id, 'done');
-    //        return { items };
-    //    });                                                                   // - фронт работает
-    //};
-
     onToggleImportant = (id) => {
-        const items = this.toggleProperty(this.state.items, id, 'important');
+        const items = this.toggleProperty(this.state.items, id, 'isImportant');
         fetch('api/todos/' + id + '/PutImportant', {
             method: 'PUT',
         })
@@ -136,7 +129,6 @@ export default class MainApp extends Component {
                     this.Refresh()
                 }
                 )
-
     };
 
     toggleProperty(arr, id, propname) {
@@ -157,9 +149,9 @@ export default class MainApp extends Component {
         if (filter === 'all') {
             return items;
         } else if (filter === 'active') {
-            return items.filter((item) => (!item.done));
+            return items.filter((item) => (!item.isCompleted));
         } else if (filter === 'done') {
-            return items.filter((item) => item.done);
+            return items.filter((item) => item.isCompleted);
         }
     }
 
@@ -175,7 +167,7 @@ export default class MainApp extends Component {
 
     render() {
         const { items, filter, search } = this.state;
-        const doneCount = items.filter((item) => item.done).length;
+        const doneCount = items.filter((item) => item.isCompleted).length;
         const toDoCount = items.length - doneCount;
         const visibleItems = this.searchItems(this.filterItems(items, filter), search);
 

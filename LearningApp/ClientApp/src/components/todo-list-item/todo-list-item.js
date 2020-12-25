@@ -1,24 +1,16 @@
 import React from 'react';
+import * as css from 'classnames'
 
 import './todo-list-item.css';
 
-const TodoListItem = ({ important, done, id,
+const TodoListItem = ({ isImportant, isCompleted, id,
     name, untilDate, onToggleImportant, onToggleDone, onDelete }) => {
 
     let dateFormat = new Date(untilDate);
     let date = dateFormat.getDate() + '.' + (dateFormat.getMonth() + 1) + '.' + dateFormat.getFullYear();
 
-    let classNames = 'todo-list-item';
-    if (important) {
-        classNames += ' important';
-    }
-
-    if (done) {
-        classNames += ' done';
-    }
-
     return (
-        <span className={classNames}>
+        <span className={css('todo-list-item', { 'important': isImportant, 'done': isCompleted })}>
             <span
                 className="todo-list-item-label"
                 onClick={() => onToggleDone(id)}>{name}
